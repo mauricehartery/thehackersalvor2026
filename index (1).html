@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Hackers 2026 — Alvor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&family=Libre+Franklin:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#F2EAD3;
+    --paper:#FBF6E9;
+    --ink:#16302A;
+    --ink-soft:#41564C;
+    --fairway:#2F5D45;
+    --fairway-dark:#152A22;
+    --clay:#AF4C29;
+    --clay-dark:#8A3B20;
+    --sand:#E0CB9E;
+    --ocean:#33636D;
+    --line:rgba(22,48,42,0.16);
+    --white:#FFFDF7;
+    --shadow: 0 12px 30px rgba(21,42,34,0.14);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Libre Franklin',sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{
+    font-family:'Big Shoulders Display',sans-serif;
+    font-weight:800;
+    letter-spacing:0.01em;
+    margin:0;
+    color:var(--ink);
+    text-transform:uppercase;
+  }
+  a{color:inherit;}
+  .mono{font-family:'Space Mono',monospace;}
+  .eyebrow{
+    font-family:'Space Mono',monospace;
+    font-size:0.72rem;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color:var(--clay);
+    font-weight:700;
+  }
+  .wrap{max-width:980px;margin:0 auto;padding:0 24px;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background:
+      radial-gradient(ellipse at 15% -10%, rgba(175,76,41,0.35), transparent 55%),
+      linear-gradient(180deg, var(--fairway-dark) 0%, #1c3a2e 100%);
+    color:var(--cream);
+    padding:64px 24px 40px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::after{
+    content:"";
+    position:absolute;
+    right:-60px;
+    bottom:-90px;
+    width:320px;
+    height:320px;
+    border:2px dashed rgba(242,234,211,0.14);
+    border-radius:50%;
+  }
+  .hero-inner{max-width:980px;margin:0 auto;position:relative;z-index:1;}
+  .hero .eyebrow{color:var(--sand);}
+  .hero h1{
+    font-size:clamp(3rem,10vw,6rem);
+    line-height:0.86;
+    color:var(--paper);
+    margin-top:6px;
+  }
+  .hero h1 span{
+    display:block;
+    color:var(--clay);
+    -webkit-text-stroke:1.5px var(--paper);
+    font-size:0.5em;
+    margin-top:6px;
+  }
+  .hero-tag{
+    max-width:520px;
+    margin:20px 0 0;
+    font-size:1.02rem;
+    color:rgba(242,234,211,0.86);
+  }
+  .stat-strip{
+    margin-top:34px;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    border-top:1px solid rgba(242,234,211,0.22);
+  }
+  .stat{
+    padding:16px 14px 4px 0;
+    border-right:1px solid rgba(242,234,211,0.22);
+  }
+  .stat:last-child{border-right:none;}
+  .stat .label{
+    font-family:'Space Mono',monospace;
+    font-size:0.64rem;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:rgba(242,234,211,0.55);
+  }
+  .stat .value{
+    font-family:'Big Shoulders Display',sans-serif;
+    font-weight:700;
+    font-size:clamp(1.1rem,3vw,1.5rem);
+    color:var(--paper);
+    margin-top:4px;
+    line-height:1.1;
+  }
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:var(--cream);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    max-width:980px;
+    margin:0 auto;
+    display:flex;
+    flex-wrap:wrap;
+    padding:0 24px;
+  }
+  .tab-btn{
+    font-family:'Space Mono',monospace;
+    font-size:0.76rem;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    background:none;
+    border:none;
+    color:var(--ink-soft);
+    padding:16px 16px 13px;
+    cursor:pointer;
+    border-bottom:3px solid transparent;
+    white-space:nowrap;
+    transition:color .15s ease, border-color .15s ease;
+  }
+  .tab-btn:hover{color:var(--ink);}
+  .tab-btn.active{color:var(--clay-dark);border-bottom-color:var(--clay);font-weight:700;}
+  .tab-btn:focus-visible{outline:2px solid var(--ocean);outline-offset:2px;}
+
+  section.panel{display:none;padding:52px 0 72px;}
+  section.panel.active{display:block;}
+
+  .section-head{margin-bottom:34px;}
+  .section-head h2{font-size:clamp(1.8rem,5vw,2.6rem);}
+  .section-head p{color:var(--ink-soft);max-width:560px;margin-top:8px;}
+
+  /* ---------- ITINERARY ---------- */
+  .timeline{position:relative;padding-left:56px;}
+  .timeline::before{
+    content:"";
+    position:absolute;
+    left:23px;
+    top:8px;
+    bottom:8px;
+    width:2px;
+    background-image:linear-gradient(var(--fairway) 60%, transparent 0%);
+    background-size:2px 10px;
+    background-repeat:repeat-y;
+  }
+  .day{position:relative;margin-bottom:44px;}
+  .day:last-child{margin-bottom:0;}
+  .day-num{
+    position:absolute;
+    left:-56px;
+    top:0;
+    width:46px;
+    height:46px;
+    border-radius:50%;
+    background:var(--fairway);
+    color:var(--paper);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:'Big Shoulders Display',sans-serif;
+    font-weight:800;
+    font-size:1.15rem;
+  }
+  .day-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;margin-bottom:14px;}
+  .day-head h3{font-size:clamp(1.4rem,4vw,1.9rem);}
+  .day-date{
+    font-family:'Space Mono',monospace;
+    font-size:0.78rem;
+    color:var(--ink-soft);
+  }
+  .row{
+    display:grid;
+    grid-template-columns:96px 1fr;
+    gap:16px;
+    padding:12px 0;
+    border-top:1px solid var(--line);
+  }
+  .row:first-of-type{border-top:1px solid var(--line);}
+  .row .time{
+    font-family:'Space Mono',monospace;
+    font-weight:700;
+    font-size:0.78rem;
+    color:var(--clay-dark);
+    line-height:1.3;
+  }
+  .row .desc strong{display:block;font-size:1rem;margin-bottom:2px;}
+  .row .desc span.note{color:var(--ink-soft);font-size:0.92rem;}
+  .chip{
+    display:inline-block;
+    font-family:'Space Mono',monospace;
+    font-size:0.68rem;
+    letter-spacing:0.05em;
+    text-transform:uppercase;
+    background:var(--sand);
+    color:var(--fairway-dark);
+    padding:3px 9px;
+    border-radius:20px;
+    margin-top:6px;
+  }
+  .chip.tee{background:var(--fairway);color:var(--paper);}
+  .names{font-size:0.86rem;color:var(--ink-soft);margin-top:4px;}
+
+  /* ---------- GOLF / SCORECARD ---------- */
+  .scorecard{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:4px;
+    box-shadow:var(--shadow);
+    overflow:hidden;
+    margin-bottom:40px;
+  }
+  .scorecard table{width:100%;border-collapse:collapse;}
+  .scorecard thead th{
+    background:var(--fairway-dark);
+    color:var(--cream);
+    font-family:'Space Mono',monospace;
+    font-size:0.68rem;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    text-align:left;
+    padding:12px 16px;
+  }
+  .scorecard tbody td{
+    padding:16px;
+    border-top:1px solid var(--line);
+    vertical-align:top;
+    font-size:0.95rem;
+  }
+  .scorecard tbody tr:nth-child(odd){background:rgba(224,203,158,0.28);}
+  .hole-num{
+    font-family:'Big Shoulders Display',sans-serif;
+    font-weight:800;
+    font-size:1.5rem;
+    color:var(--clay);
+  }
+  .scorecard .course-name{font-weight:700;font-size:1.02rem;}
+  .scorecard .tee-time{font-family:'Space Mono',monospace;font-weight:700;color:var(--fairway-dark);}
+
+  /* Horizontally scrollable variant, for wide tables on small screens */
+  .scorecard.scroll-x{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .scorecard.scroll-x table{min-width:640px;}
+
+  .course-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  .course-card{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:20px;
+  }
+  .course-card h4{font-size:1.15rem;margin-bottom:4px;}
+  .course-card p{font-size:0.88rem;color:var(--ink-soft);margin:8px 0 14px;}
+  .maplink{
+    font-family:'Space Mono',monospace;
+    font-size:0.74rem;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    color:var(--ocean);
+    text-decoration:none;
+    border-bottom:1px solid var(--ocean);
+    padding-bottom:1px;
+  }
+  .maplink.flyover{color:var(--clay-dark);border-bottom-color:var(--clay-dark);margin-left:14px;}
+
+  /* ---------- VILLA ---------- */
+  .villa-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:28px;align-items:start;}
+  .villa-card{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:26px;
+    box-shadow:var(--shadow);
+  }
+  .villa-card h3{font-size:1.6rem;}
+  .villa-card .addr{font-family:'Space Mono',monospace;font-size:0.82rem;color:var(--ink-soft);margin-top:6px;}
+  .villa-card p.desc{margin-top:14px;font-size:0.95rem;color:var(--ink-soft);}
+  .amenities{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;}
+  .amenity{
+    font-family:'Space Mono',monospace;
+    font-size:0.7rem;
+    text-transform:uppercase;
+    background:var(--cream);
+    padding:5px 10px;
+    border-radius:20px;
+    color:var(--fairway-dark);
+  }
+  .map-embed{
+    width:100%;
+    height:280px;
+    border:1px solid var(--line);
+    border-radius:4px;
+    overflow:hidden;
+  }
+  .map-embed iframe{width:100%;height:100%;border:0;}
+  .rooms-table{margin-top:18px;width:100%;border-collapse:collapse;font-size:0.9rem;}
+  .rooms-table th{
+    text-align:left;
+    font-family:'Space Mono',monospace;
+    font-size:0.68rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    padding:8px 6px;
+    border-bottom:1px solid var(--line);
+  }
+  .rooms-table td{padding:8px 6px;border-bottom:1px solid var(--line);}
+
+  /* ---------- WEATHER / INFO ---------- */
+  .weather-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:40px;}
+  .wstat{
+    background:var(--fairway-dark);
+    color:var(--paper);
+    border-radius:4px;
+    padding:20px 16px;
+    text-align:center;
+  }
+  .wstat .num{font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:2.1rem;color:var(--sand);}
+  .wstat .lbl{font-family:'Space Mono',monospace;font-size:0.66rem;letter-spacing:0.08em;text-transform:uppercase;margin-top:4px;color:rgba(242,234,211,0.75);}
+
+  .info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  .info-card{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:18px;
+  }
+  .info-card .eyebrow{color:var(--ocean);}
+  .info-card p{margin:6px 0 0;font-size:0.9rem;color:var(--ink-soft);}
+
+  /* ---------- DINNERS / EMPTY STATE ---------- */
+  .empty-state{
+    border:2px dashed var(--line);
+    border-radius:4px;
+    padding:60px 24px;
+    text-align:center;
+  }
+  .empty-state h3{font-size:1.6rem;color:var(--ink);}
+  .empty-state p{max-width:420px;margin:12px auto 0;color:var(--ink-soft);}
+
+  footer{
+    background:var(--fairway-dark);
+    color:rgba(242,234,211,0.6);
+    text-align:center;
+    padding:26px;
+    font-family:'Space Mono',monospace;
+    font-size:0.74rem;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+  }
+
+  @media (max-width:760px){
+    .stat-strip{grid-template-columns:repeat(2,1fr);}
+    .stat:nth-child(2){border-right:none;}
+    .villa-grid{grid-template-columns:1fr;}
+    .course-cards{grid-template-columns:1fr;}
+    .weather-grid{grid-template-columns:repeat(2,1fr);}
+    .info-grid{grid-template-columns:1fr;}
+    .timeline{padding-left:44px;}
+    .day-num{left:-44px;width:38px;height:38px;font-size:0.95rem;}
+    .row{grid-template-columns:78px 1fr;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">8–11 October 2026 · Alvor, Algarve</div>
+    <h1>The Hackers<span>2026</span></h1>
+    <p class="hero-tag">Four days on the Algarve — three rounds, serious craic, and a scorecard nobody will admit to.</p>
+    <div class="stat-strip">
+      <div class="stat"><div class="label">Dates</div><div class="value">8–11 Oct</div></div>
+      <div class="stat"><div class="label">Golfers</div><div class="value">12 Travelling</div></div>
+      <div class="stat"><div class="label">Route</div><div class="value">SNN → FAO</div></div>
+      <div class="stat"><div class="label">Rounds</div><div class="value">3 Courses</div></div>
+    </div>
+  </div>
+</header>
+
+<nav>
+  <div class="nav-inner" id="tabs">
+    <button class="tab-btn active" data-tab="itinerary">Itinerary</button>
+    <button class="tab-btn" data-tab="golf">Golf</button>
+    <button class="tab-btn" data-tab="competition">Competition</button>
+    <button class="tab-btn" data-tab="villa">Hotel &amp; Stay</button>
+    <button class="tab-btn" data-tab="dinners">Food</button>
+    <button class="tab-btn" data-tab="info">Weather &amp; Info</button>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <!-- ITINERARY -->
+  <section class="panel active" id="itinerary">
+    <div class="section-head">
+      <h2>The Plan</h2>
+      <p>Two flights out, one flight home, three tee times in between — with lunch and a warm-up built in before each one. Times below are local (Portugal, same as Ireland this week).</p>
+    </div>
+
+    <div class="timeline">
+
+      <div class="day">
+        <div class="day-num">01</div>
+        <div class="day-head">
+          <h3>Touchdown</h3>
+          <span class="day-date">Thursday 8 October</span>
+        </div>
+
+        <div class="row">
+          <div class="time">10:45</div>
+          <div class="desc">
+            <strong>Depart Shannon</strong>
+            <span class="note">Eight travelling: Charley, Ross, Bobby, Conall, Fearghal, Griffin, Josh &amp; Browne.</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="time">13:30</div>
+          <div class="desc">
+            <strong>Arrive Faro</strong>
+            <span class="chip">Transfer included</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="time">14:00 → 14:50</div>
+          <div class="desc">
+            <strong>Transfer to Wyndham Residences Alvor Beach</strong>
+            <span class="note">Faro Airport → Alvor is around 75km via the A22 — roughly 50 minutes on the road.</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="time">15:00</div>
+          <div class="desc">
+            <strong>Check in at the Wyndham</strong>
+            <span class="note">Get the bags dropped, first pint of the trip.</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="time">18:45</div>
+          <div class="desc">
+            <strong>Dinner at Ruccula</strong>
+            <span class="note">Alvor institution overlooking the harbour — a relaxed first-night dinner before the golf starts.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-num">02</div>
+        <div class="day-head">
+          <h3>Laguna</h3>
+          <span class="day-date">Friday 9 October</span>
+        </div>
+
+        <div class="row">
+          <div class="time">09:20</div>
+          <div class="desc">
+            <strong>Depart Shannon</strong>
+            <span class="note">Maurice, Coady &amp; Fintan, transferring straight to the course.</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="time">12:05</div>
+          <div class="desc">
+            <strong>Arrive Faro</strong>
+            <span class="chip">Transfer straight to Laguna</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="time">12:30 → 13:00</div>
+          <div class="desc">
+            <strong>Maurice, Coady &amp; Fintan transfer to Laguna</strong>
+            <span class="note">Faro Airport → Laguna is about 27km — roughly 30 minutes, timed to arrive with the rest of the group.</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="time">12:20 → 13:00</div>
+          <div class="desc">
+            <strong>The Wyndham crew transfer to Laguna</strong>
+            <span class="note">The eight from Thursday, plus Bourkey, head over from Alvor — about 45km, roughly 40 minutes — arriving alongside the airport group for lunch together.</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="time">13:00 → 14:00</div>
+          <div class="desc">
+            <strong>Lunch at the Laguna clubhouse</strong>
+            <span class="note">Whole group together before golf — order early, service can take a bit with 12 at the table.</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="time">14:00 → 14:45</div>
+          <div class="desc">
+            <strong>Warm up — range &amp; putting green</strong>
+            <span class="note">Get loose before the first tee.</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="time">14:50</div>
+          <div class="desc">
+            <strong>Tee time — Laguna Golf Course</strong>
+            <span class="note">Format: Chapman.</span>
+            <span class="chip tee">Round I</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="time">~5 hrs</div>
+          <div class="desc">
+            <strong>Round of golf</strong>
+            <span class="note">Allow around 5 hours, finishing up close to 19:50.</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="time">~20:00 → 20:40</div>
+          <div class="desc">
+            <strong>Transfer back to the Wyndham</strong>
+            <span class="note">About 40 minutes back to Alvor.</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="time">21:00</div>
+          <div class="desc">
+            <strong>Depart Hotel for Pints</strong>
+            <span class="note">No sit-down dinner tonight — grab some takeaway while out, or a quick bite at Churrasqueira Mercado de Alvor beforehand (see Food tab).</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-num">03</div>
+        <div class="day-head">
+          <h3>Palmares</h3>
+          <span class="day-date">Saturday 10 October</span>
+        </div>
+
+        <div class="row">
+          <div class="time">AM</div>
+          <div class="desc">
+            <strong>Free morning</strong>
+            <span class="note">Breakfast at the Wyndham, pool, beach — whatever the legs need after day one.</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="time">12:00 → 12:15</div>
+          <div class="desc">
+            <strong>Transfer to Palmares</strong>
+            <span class="note">The closest course to base — Palmares is only about 5km from the Wyndham, 10–15 minutes on the road.</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="time">12:15 → 13:00</div>
+          <div class="desc">
+            <strong>Lunch at the Palmares clubhouse</strong>
+            <span class="note">The RCR-designed clubhouse looks straight out over the Alvor Estuary — worth the extra few minutes to sit outside.</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="time">13:00 → 13:35</div>
+          <div class="desc">
+            <strong>Warm up — range &amp; putting green</strong>
+            <span class="note">Get loose before the first tee.</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="time">13:40</div>
+          <div class="desc">
+            <strong>Tee time — Palmares Golf Course</strong>
+            <span class="note">Format: Fourball.</span>
+            <span class="chip tee">Round II</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="time">~5 hrs</div>
+          <div class="desc">
+            <strong>Round of golf</strong>
+            <span class="note">Allow around 5 hours, finishing up close to 18:40.</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="time">~18:50 → 19:05</div>
+          <div class="desc">
+            <strong>Transfer back to the Wyndham</strong>
+            <span class="note">About 15 minutes back to Alvor.</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="time">20:00</div>
+          <div class="desc">
+            <strong>Dinner at Mumbai Darbar</strong>
+            <span class="note">Alvor's top-rated Indian, near the bus station at the entrance to town — customisable spice levels for the whole table.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-num">04</div>
+        <div class="day-head">
+          <h3>Faldo &amp; Home</h3>
+          <span class="day-date">Sunday 11 October</span>
+        </div>
+
+        <div class="row">
+          <div class="time">11:45 → 12:20</div>
+          <div class="desc">
+            <strong>Transfer to Amendoeira</strong>
+            <span class="note">Out towards Silves — roughly 35 minutes from the Wyndham. Bags can travel with you or go straight to Faro, whichever's easiest.</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="time">12:20 → 13:05</div>
+          <div class="desc">
+            <strong>Lunch at the Amendoeira clubhouse</strong>
+            <span class="note">Last lunch of the trip — no excuse not to linger a little.</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="time">13:05 → 13:35</div>
+          <div class="desc">
+            <strong>Warm up — range &amp; putting green</strong>
+            <span class="note">Get loose before the first tee.</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="time">13:40</div>
+          <div class="desc">
+            <strong>Tee time — Faldo Course, Amendoeira</strong>
+            <span class="note">Format: Champagne Scramble — the decider.</span>
+            <span class="chip tee">Round III</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="time">~18:00</div>
+          <div class="desc">
+            <strong>Round finishes — showers at the clubhouse</strong>
+            <span class="note">Freshen up before the transfer.</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="time">18:15 → 19:00</div>
+          <div class="desc">
+            <strong>Prize Presentation</strong>
+            <span class="note">Our Prize Ceremony will take place here in the clubhouse. We will also find out who is Bandit of the Trip and who will organise next year's trip.</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="time">19:10 → 19:45</div>
+          <div class="desc">
+            <strong>Transfer to Faro Airport</strong>
+            <span class="note">Amendoeira → Faro is about 35 minutes — timed to land at the airport for 19:45, a comfortable buffer before a 22:15 flight. Transfer included.</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="time">22:15</div>
+          <div class="desc">
+            <strong>Depart Faro</strong>
+            <span class="note">Lands Shannon 01:00. Eleven travelling home — Bourkey stays on with the family.</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- GOLF -->
+  <section class="panel" id="golf">
+    <div class="section-head">
+      <h2>The Scorecard</h2>
+      <p>Three rounds, three courses. Airport and golf transfers are covered for the whole group.</p>
+    </div>
+
+    <div class="scorecard">
+      <table>
+        <thead>
+          <tr>
+            <th>Round</th>
+            <th>Course</th>
+            <th>Date</th>
+            <th>Tee Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="hole-num">I</span></td>
+            <td><span class="course-name">Laguna Golf Course</span></td>
+            <td>Fri 9 Oct</td>
+            <td class="tee-time">14:50</td>
+          </tr>
+          <tr>
+            <td><span class="hole-num">II</span></td>
+            <td><span class="course-name">Palmares Golf Course</span></td>
+            <td>Sat 10 Oct</td>
+            <td class="tee-time">13:40</td>
+          </tr>
+          <tr>
+            <td><span class="hole-num">III</span></td>
+            <td><span class="course-name">Faldo Course, Amendoeira</span></td>
+            <td>Sun 11 Oct</td>
+            <td class="tee-time">13:40</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="course-cards">
+      <div class="course-card">
+        <h4>Laguna Golf Course</h4>
+        <p>One of five courses in the Vilamoura golf cluster, Laguna sits on low-lying coastal land — flatter and more open than its neighbours, with a distinct links feel despite being inland. There's next to no rough to punish a stray tee shot, but water comes into play on eleven of the eighteen holes, so accuracy over distance is the name of the game. The back nine turns for home along the toughest stretch of the course, especially with any wind off the coast. Par 72.</p>
+        <span class="chip" style="margin-bottom:12px;">~40 min from the Wyndham</span>
+        <span class="chip" style="margin-bottom:12px;">Yellow Tees · 6,316 yds</span><br>
+        <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=37.1009205,-8.1354638" target="_blank" rel="noopener">Open in Maps →</a>
+        <a class="maplink flyover" href="https://www.flyovergreen.com/en/golfs/aerial-video/5947-laguna-golf-course" target="_blank" rel="noopener">Watch Flyover →</a>
+      </div>
+      <div class="course-card">
+        <h4>Palmares Golf Course</h4>
+        <p>A 27-hole Robert Trent Jones Jr. design split into three nine-hole loops — Alvor, Lagos and Praia — each with its own character. Alvor is hilly parkland through pine corridors with views to the Monchique hills; Lagos mixes parkland and lakes; Praia is the headline act, true links golf through the dunes with the Atlantic in view on almost every hole. The clubhouse, designed by Pritzker Prize winners RCR Architects, looks out over the Alvor Estuary and Meia Praia beach. Closest course to base by some distance.</p>
+        <span class="chip" style="margin-bottom:12px;">~15 min from the Wyndham</span>
+        <span class="chip" style="margin-bottom:12px;">Alvor-Lagos Routing · Yellow Tees · 6,631 yds</span><br>
+        <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=37.126410199999995,-8.64133" target="_blank" rel="noopener">Open in Maps →</a>
+        <a class="maplink flyover" href="https://www.youtube.com/watch?v=INOlJzCXcS0" target="_blank" rel="noopener">Watch Flyover →</a>
+      </div>
+      <div class="course-card">
+        <h4>Faldo Course, Amendoeira</h4>
+        <p>Sir Nick Faldo's only design in the Algarve, set inland near Silves amid olive groves and rocky outcrops with a distinctly desert-golf look — crushed limestone bunkers standing in for the sandy tracts of Faldo's English home courses. It's a strategic, position-first layout that punishes anyone chasing distance over placement, with the more dramatic, undulating holes saved for the back nine. Fitting territory for the last round of the trip. Par 72.</p>
+        <span class="chip" style="margin-bottom:12px;">~35 min from the Wyndham</span>
+        <span class="chip" style="margin-bottom:12px;">Yellow Tees · 6,406 yds</span><br>
+        <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=37.1476752,-8.360033" target="_blank" rel="noopener">Open in Maps →</a>
+        <a class="maplink flyover" href="https://www.youtube.com/watch?v=vP5kC199zU0" target="_blank" rel="noopener">Watch Flyover →</a>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- COMPETITION -->
+  <section class="panel" id="competition">
+    <div class="section-head">
+      <h2>The Competition</h2>
+      <p>A three-day pairs event, one format per round, running across all three courses.</p>
+    </div>
+
+    <div class="course-cards">
+      <div class="course-card">
+        <span class="chip tee" style="margin-bottom:10px;">Round I · Laguna · Fri 9 Oct</span>
+        <h4>Chapman</h4>
+        <p>Both players in a team tee off, then swap balls for the second shot — you play your partner's drive, they play yours. From there, the team picks the better of the two second shots and plays alternate shot the rest of the way to the hole. Rewards a good drive and a smart choice almost as much as the golf itself.</p>
+      </div>
+      <div class="course-card">
+        <span class="chip tee" style="margin-bottom:10px;">Round II · Palmares · Sat 10 Oct</span>
+        <h4>Fourball</h4>
+        <p>Better ball. Everyone plays their own ball for all 18 holes, and the team score on each hole is whichever partner scored lower. Straightforward, forgiving of a bad hole, and the format most likely to produce a genuinely good scorecard.</p>
+      </div>
+      <div class="course-card">
+        <span class="chip tee" style="margin-bottom:10px;">Round III · Faldo · Sun 11 Oct</span>
+        <h4>Champagne Scramble</h4>
+        <p>Everyone in the team tees off, the best shot is picked, and both players then play their next shot from that spot — repeating all the way to the hole. Fast, sociable, and the format that keeps both players in every hole regardless of who's playing well. A fitting, relaxed way to close out the trip.</p>
+      </div>
+    </div>
+
+    <div class="section-head" style="margin-top:44px;">
+      <h2 style="font-size:clamp(1.5rem,4vw,2rem);">The Scoring</h2>
+      <p>Points awarded per team, per day — best score across the three days wins.</p>
+    </div>
+
+    <div class="villa-grid">
+      <div class="scorecard" style="margin-bottom:0;">
+        <table>
+          <thead>
+            <tr>
+              <th>Position</th>
+              <th>Points</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="course-name">1st</td><td class="tee-time">10</td></tr>
+            <tr><td class="course-name">2nd</td><td class="tee-time">8</td></tr>
+            <tr><td class="course-name">3rd</td><td class="tee-time">6</td></tr>
+            <tr><td class="course-name">4th</td><td class="tee-time">5</td></tr>
+            <tr><td class="course-name">5th</td><td class="tee-time">4</td></tr>
+            <tr><td class="course-name">6th</td><td class="tee-time">2</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="villa-card">
+        <span class="eyebrow">Bonus Points</span>
+        <h3 style="font-size:1.3rem;margin-top:6px;">Up For Grabs Each Day</h3>
+        <div class="amenities" style="margin-top:16px;">
+          <span class="amenity">+1 Closest To The Pin</span>
+          <span class="amenity">+1 Longest Drive</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-head" style="margin-top:44px;">
+      <h2 style="font-size:clamp(1.5rem,4vw,2rem);">The Teams</h2>
+      <p>Pair handicaps below are slope-adjusted per course — each player's Handicap Index is converted to a Course Handicap for that round (Index × Slope/113, adjusted for Course Rating vs Par), then the format percentage is applied on top: Chapman uses 60% of the lower Course Handicap + 40% of the higher; Fourball allows each player 85% of their own Course Handicap; the Scramble uses 35% of the lower + 15% of the higher. All rounded to the nearest whole stroke.</p>
+    </div>
+
+    <div class="scorecard scroll-x">
+      <table>
+        <thead>
+          <tr>
+            <th>Team</th>
+            <th>Pairing</th>
+            <th>Chapman<br><span style="font-weight:400;text-transform:none;">Laguna</span></th>
+            <th>Fourball<br><span style="font-weight:400;text-transform:none;">Palmares</span></th>
+            <th>Scramble<br><span style="font-weight:400;text-transform:none;">Faldo</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="hole-num" style="font-size:1.15rem;">1</span></td>
+            <td class="course-name">Charley &amp; Josh</td>
+            <td class="tee-time">14</td>
+            <td class="tee-time">15 / 10</td>
+            <td class="tee-time">7</td>
+          </tr>
+          <tr>
+            <td><span class="hole-num" style="font-size:1.15rem;">2</span></td>
+            <td class="course-name">Ross &amp; Fintan</td>
+            <td class="tee-time">21</td>
+            <td class="tee-time">14 / 24</td>
+            <td class="tee-time">10</td>
+          </tr>
+          <tr>
+            <td><span class="hole-num" style="font-size:1.15rem;">3</span></td>
+            <td class="course-name">Conall &amp; Ferg</td>
+            <td class="tee-time">7</td>
+            <td class="tee-time">15 / +1</td>
+            <td class="tee-time">3</td>
+          </tr>
+          <tr>
+            <td><span class="hole-num" style="font-size:1.15rem;">4</span></td>
+            <td class="course-name">Bourkey &amp; Griffin</td>
+            <td class="tee-time">15</td>
+            <td class="tee-time">9 / 19</td>
+            <td class="tee-time">7</td>
+          </tr>
+          <tr>
+            <td><span class="hole-num" style="font-size:1.15rem;">5</span></td>
+            <td class="course-name">Coady &amp; Browne</td>
+            <td class="tee-time">20</td>
+            <td class="tee-time">17 / 17</td>
+            <td class="tee-time">10</td>
+          </tr>
+          <tr>
+            <td><span class="hole-num" style="font-size:1.15rem;">6</span></td>
+            <td class="course-name">Maurice &amp; Bobby</td>
+            <td class="tee-time">6</td>
+            <td class="tee-time">8 / 5</td>
+            <td class="tee-time">3</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section-head" style="margin-top:44px;">
+      <h2 style="font-size:clamp(1.5rem,4vw,2rem);">Handicaps</h2>
+    </div>
+
+    <div class="scorecard">
+      <table>
+        <thead>
+          <tr>
+            <th>Player</th>
+            <th>Handicap</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="course-name">Fearghal</td><td class="tee-time">+0.2</td></tr>
+          <tr><td class="course-name">Bobby</td><td class="tee-time">5.3</td></tr>
+          <tr><td class="course-name">Maurice</td><td class="tee-time">8.1</td></tr>
+          <tr><td class="course-name">Bourkey</td><td class="tee-time">10.2</td></tr>
+          <tr><td class="course-name">Josh</td><td class="tee-time">11.0</td></tr>
+          <tr><td class="course-name">Ross</td><td class="tee-time">15.6</td></tr>
+          <tr><td class="course-name">Conall</td><td class="tee-time">16.6</td></tr>
+          <tr><td class="course-name">Charley</td><td class="tee-time">16.7</td></tr>
+          <tr><td class="course-name">Coady</td><td class="tee-time">18</td></tr>
+          <tr><td class="course-name">Browne</td><td class="tee-time">18.3</td></tr>
+          <tr><td class="course-name">Griffin</td><td class="tee-time">20</td></tr>
+          <tr><td class="course-name">Fintan</td><td class="tee-time">25</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section-head" style="margin-top:44px;">
+      <h2 style="font-size:clamp(1.5rem,4vw,2rem);">Course Handicaps</h2>
+      <p>Each player's Handicap Index, converted per course using Slope and Course Rating off the yellow tees — Laguna (CR 71.0 / Slope 129), Palmares Alvor-Lagos (CR 71.7 / Slope 127), Faldo (CR 70.9 / Slope 134), all Par 72.</p>
+    </div>
+
+    <div class="scorecard scroll-x">
+      <table>
+        <thead>
+          <tr>
+            <th>Player</th>
+            <th>Laguna</th>
+            <th>Palmares</th>
+            <th>Faldo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="course-name">Fearghal</td><td class="tee-time">-1</td><td class="tee-time">-1</td><td class="tee-time">-1</td></tr>
+          <tr><td class="course-name">Bobby</td><td class="tee-time">5</td><td class="tee-time">6</td><td class="tee-time">5</td></tr>
+          <tr><td class="course-name">Maurice</td><td class="tee-time">8</td><td class="tee-time">9</td><td class="tee-time">9</td></tr>
+          <tr><td class="course-name">Bourkey</td><td class="tee-time">11</td><td class="tee-time">11</td><td class="tee-time">11</td></tr>
+          <tr><td class="course-name">Josh</td><td class="tee-time">12</td><td class="tee-time">12</td><td class="tee-time">12</td></tr>
+          <tr><td class="course-name">Ross</td><td class="tee-time">17</td><td class="tee-time">17</td><td class="tee-time">17</td></tr>
+          <tr><td class="course-name">Conall</td><td class="tee-time">18</td><td class="tee-time">18</td><td class="tee-time">19</td></tr>
+          <tr><td class="course-name">Charley</td><td class="tee-time">18</td><td class="tee-time">18</td><td class="tee-time">19</td></tr>
+          <tr><td class="course-name">Coady</td><td class="tee-time">20</td><td class="tee-time">20</td><td class="tee-time">20</td></tr>
+          <tr><td class="course-name">Browne</td><td class="tee-time">20</td><td class="tee-time">20</td><td class="tee-time">21</td></tr>
+          <tr><td class="course-name">Griffin</td><td class="tee-time">22</td><td class="tee-time">22</td><td class="tee-time">23</td></tr>
+          <tr><td class="course-name">Fintan</td><td class="tee-time">28</td><td class="tee-time">28</td><td class="tee-time">29</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- VILLA -->
+  <section class="panel" id="villa">
+    <div class="section-head">
+      <h2>Home Base</h2>
+      <p>Every night of the trip is spent here — walking distance to Alvor Beach and the old town.</p>
+    </div>
+
+    <div class="villa-grid">
+      <div class="villa-card">
+        <span class="eyebrow">Wyndham Residences Alvor Beach</span>
+        <h3>The Wyndham</h3>
+        <div class="addr">Praia de Alvor, R. do Barinel, 8500-053 Portimão, Portugal<br>+351 282 460 250</div>
+        <p class="desc">A beachfront hotel on Portugal's Algarve coast, steps from the golden sands of Alvor Beach and the cobbled streets of the old town — restaurants, shops and bars all within a stroll. Outdoor pool, on-site restaurant and bar, and free high-speed WiFi throughout.</p>
+        <div class="amenities">
+          <span class="amenity">Outdoor pool</span>
+          <span class="amenity">On-site restaurant &amp; bar</span>
+          <span class="amenity">Beachfront</span>
+          <span class="amenity">Free WiFi</span>
+          <span class="amenity">Walk to Old Town</span>
+        </div>
+
+        <table class="rooms-table">
+          <tr><th>Room</th><th>Guests</th><th>Nights</th></tr>
+          <tr><td>1</td><td>Josh &amp; Bobby</td><td>8–11 Oct</td></tr>
+          <tr><td>2</td><td>Charley &amp; Ross</td><td>8–11 Oct</td></tr>
+          <tr><td>3</td><td>Ferg &amp; Rob</td><td>8–11 Oct</td></tr>
+          <tr><td>4</td><td>Conall &amp; Griffin</td><td>8–11 Oct</td></tr>
+          <tr><td>5</td><td>Maurice &amp; Bourkey</td><td>9–11 Oct</td></tr>
+          <tr><td>6</td><td>Coady &amp; Fintan</td><td>9–11 Oct</td></tr>
+        </table>
+      </div>
+
+      <div>
+        <div class="map-embed">
+          <iframe src="https://www.google.com/maps?q=37.1244407,-8.5894758&output=embed" loading="lazy" title="Wyndham Residences Alvor Beach map"></iframe>
+        </div>
+        <p style="font-size:0.86rem;color:var(--ink-soft);margin-top:10px;">10–15 minutes from Alto Golf, about 45 minutes from Faro Airport by road.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- DINNERS -->
+  <section class="panel" id="dinners">
+    <div class="section-head">
+      <h2>Food</h2>
+      <p>Recommendations to add to the list — more to come as dinners get locked in.</p>
+    </div>
+
+    <div class="course-cards">
+      <div class="course-card">
+        <h4>Cult n' Art Café</h4>
+        <p>A small, warm café-slash-concept-store in Alvor's old town, run by a couple who take real pride in fresh, homemade food — think shakshuka, granola bowls, toasts, fresh juices, and proper coffee. Great shout for a breakfast or brunch morning before golf. Open Tuesday to Saturday, 9:00–15:00 — closed Mondays and Sundays.</p>
+        <span class="chip" style="margin-bottom:12px;">R. do Castelo 18, Alvor</span><br>
+        <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=37.1301653,-8.5931295" target="_blank" rel="noopener">Open in Maps →</a>
+        <a class="maplink flyover" href="https://restaurantguru.com/Cafe-Padaria-Pao-D-Avo-Portimao" target="_blank" rel="noopener">View Menu →</a>
+      </div>
+      <div class="course-card">
+        <h4>Wild's Sandwich Boutique</h4>
+        <p>Alvor's top-rated sandwich spot — homemade bread, breakfast baps, Irish sausages and black pudding, cinnamon rolls, and proper coffee, all run by a genuinely friendly team who remember faces. Good for a takeaway sandwich on the way to golf or a sit-down brunch. Open daily except Mondays, 9:00–4:00pm (Thursdays until 1:00pm).</p>
+        <span class="chip" style="margin-bottom:12px;">R. Q.ta da Praia, Alvor</span><br>
+        <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=37.1274337,-8.5888767" target="_blank" rel="noopener">Open in Maps →</a>
+        <a class="maplink flyover" href="https://restaurantguru.com/Wilds-Sandwich-Boutique-Alvor/menu" target="_blank" rel="noopener">View Menu →</a>
+      </div>
+      <div class="course-card">
+        <h4>Albar</h4>
+        <p>The go-to for late-night food in Alvor — piri-piri chicken, kebabs, burgers, fish and chips, all at reasonable prices, with outdoor seating right in the town centre. Does takeaway too, and stays open until 1am every night — the obvious call after pints on Friday.</p>
+        <span class="chip" style="margin-bottom:12px;">R. Padre David Neto, Alvor</span><br>
+        <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=37.1296341,-8.5939331" target="_blank" rel="noopener">Open in Maps →</a>
+        <a class="maplink flyover" href="https://pt.restaurantguru.com/Albar-Alvor" target="_blank" rel="noopener">View Menu →</a>
+      </div>
+      <div class="course-card">
+        <h4>Churrasqueira Mercado de Alvor</h4>
+        <p>A proper Portuguese churrasqueira, all about piri-piri chicken and grilled fish, simple menu, high turnover, packed with locals. Fast enough for a quick sit-down without eating into the night — a good shout before heading out for pints on Friday instead of takeaway.</p>
+        <span class="chip" style="margin-bottom:12px;">Largo do Castelo, Alvor</span><br>
+        <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=37.1296559,-8.5932042" target="_blank" rel="noopener">Open in Maps →</a>
+        <a class="maplink flyover" href="https://restaurantguru.com/Mercado-de-Alvor-Alvor/menu" target="_blank" rel="noopener">View Menu →</a>
+      </div>
+      <div class="course-card">
+        <h4>Ruccula</h4>
+        <p>An Alvor institution overlooking the harbour, family-run for close to 20 years and consistently one of the best-reviewed spots in town. A modern, varied menu — lamb shank, sea bass and fillet steak are the standouts — with a big, well-priced wine list. Booked out most nights, so worth getting there early to catch the sunset over the water. Our pick for the first night of the trip.</p>
+        <span class="chip" style="margin-bottom:12px;">R. Poeta João de Deus, Alvor</span><br>
+        <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=Ruccula+Rua+Poeta+Joao+de+Deus+Alvor+Portugal" target="_blank" rel="noopener">Open in Maps →</a>
+        <a class="maplink flyover" href="https://restaurantguru.com/Ruccula-Alvor/menu" target="_blank" rel="noopener">View Menu →</a>
+      </div>
+      <div class="course-card">
+        <h4>Mumbai Darbar</h4>
+        <p>Alvor's top-rated Indian — ranked in the top handful of restaurants in town, with nearly a thousand reviews averaging 4.8/5. The big draw is fully customisable spice levels, so everyone from mild to very hot is covered at the same table. Standouts include the Chicken Lababdar, Butter Chicken, Saag Paneer and the Peshwari naan. Handles large groups well — worth booking ahead for 12 on a Saturday night.</p>
+        <span class="chip" style="margin-bottom:12px;">Rossio Grande, Alvor</span><br>
+        <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=Mumbai+Darbar+Rossio+Grande+Alvor+Portugal" target="_blank" rel="noopener">Open in Maps →</a>
+        <a class="maplink flyover" href="https://mumbaidarbaralvor.com/menu.html" target="_blank" rel="noopener">View Menu →</a>
+      </div>
+    </div>
+
+    <div class="empty-state" style="margin-top:24px;">
+      <h3>More to come</h3>
+      <p>Dinners and nights out will land here as they're locked in — check back closer to the trip.</p>
+    </div>
+  </section>
+
+  <!-- WEATHER & INFO -->
+  <section class="panel" id="info">
+    <div class="section-head">
+      <h2>Weather &amp; Useful Info</h2>
+      <p>Typical conditions for Alvor in early October — good golfing weather most days.</p>
+    </div>
+
+    <div class="weather-grid">
+      <div class="wstat"><div class="num">22–23°</div><div class="lbl">Daytime High</div></div>
+      <div class="wstat"><div class="num">16–17°</div><div class="lbl">Overnight Low</div></div>
+      <div class="wstat"><div class="num">~20°</div><div class="lbl">Sea Temp</div></div>
+      <div class="wstat"><div class="num">~18%</div><div class="lbl">Chance Of Rain</div></div>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="eyebrow">Time Zone</div>
+        <p>Portugal is on the same time as Ireland this week — no watch-changing needed.</p>
+      </div>
+      <div class="info-card">
+        <div class="eyebrow">Power</div>
+        <p>Portugal uses 2-pin Type C/F sockets, different to Ireland's 3-pin — bring an adapter.</p>
+      </div>
+      <div class="info-card">
+        <div class="eyebrow">Currency</div>
+        <p>Euro. Cards widely accepted, but a fair few spots in Alvor are cash only — plenty of ATMs around the town, so worth keeping some cash on hand for taxis, small bars, and those places.</p>
+      </div>
+      <div class="info-card">
+        <div class="eyebrow">Emergency Number</div>
+        <p>112 works across the EU for police, ambulance or fire.</p>
+      </div>
+      <div class="info-card">
+        <div class="eyebrow">Tipping</div>
+        <p>Not obligatory in Portugal — rounding up or 5–10% for good service is normal, not expected.</p>
+      </div>
+      <div class="info-card">
+        <div class="eyebrow">Group Size</div>
+        <p>12 golfers travelling — Bourkey joins for the golf, the other 11 fly out together.</p>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>The Hackers 2026 · Alvor</footer>
+
+<script>
+  const tabs = document.querySelectorAll('.tab-btn');
+  const panels = document.querySelectorAll('.panel');
+  tabs.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabs.forEach(b => b.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.tab).classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>
