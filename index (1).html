@@ -133,15 +133,16 @@
   .nav-inner{
     max-width:980px;
     margin:0 auto;
-    display:flex;
-    flex-wrap:wrap;
-    padding:0 24px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));
+    padding:8px 24px;
   }
   .tab-btn{
     font-family:'Space Mono',monospace;
     font-size:0.76rem;
     letter-spacing:0.06em;
     text-transform:uppercase;
+    text-align:center;
     background:none;
     border:none;
     color:var(--ink-soft);
@@ -418,6 +419,7 @@
     <button class="tab-btn active" data-tab="itinerary">Itinerary</button>
     <button class="tab-btn" data-tab="golf">Golf</button>
     <button class="tab-btn" data-tab="competition">Competition</button>
+    <button class="tab-btn" data-tab="teams">Teams &amp; Formats</button>
     <button class="tab-btn" data-tab="villa">Hotel &amp; Stay</button>
     <button class="tab-btn" data-tab="dinners">Food</button>
     <button class="tab-btn" data-tab="info">Weather &amp; Info</button>
@@ -770,6 +772,14 @@
       <p>A three-day pairs event, one format per round, running across all three courses.</p>
     </div>
 
+    <div class="villa-card" style="margin-bottom:40px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;">
+      <div>
+        <span class="eyebrow">Live Scoring</span>
+        <h3 style="font-size:1.3rem;margin-top:6px;">Enter Scores &amp; Check The Leaderboard</h3>
+      </div>
+      <a class="maplink flyover" style="font-size:0.8rem;" href="https://hackers-scores.cmackernan.workers.dev/" target="_blank" rel="noopener">Open Scoring App →</a>
+    </div>
+
     <div class="course-cards">
       <div class="course-card">
         <span class="chip tee" style="margin-bottom:10px;">Round I · Laguna · Fri 9 Oct</span>
@@ -824,7 +834,32 @@
     </div>
 
     <div class="section-head" style="margin-top:44px;">
-      <h2 style="font-size:clamp(1.5rem,4vw,2rem);">The Teams</h2>
+      <h2 style="font-size:clamp(1.5rem,4vw,2rem);">The Prize Pool</h2>
+      <p>€50 per pair, 6 pairs — €300 total. Split between the overall standings and a prize for the best team score each day.</p>
+    </div>
+
+    <div class="scorecard">
+      <table>
+        <thead>
+          <tr>
+            <th>Prize</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="course-name">Overall Winner</td><td class="tee-time">€150</td></tr>
+          <tr><td class="course-name">Round I Winner · Laguna</td><td class="tee-time">€50</td></tr>
+          <tr><td class="course-name">Round II Winner · Palmares</td><td class="tee-time">€50</td></tr>
+          <tr><td class="course-name">Round III Winner · Faldo</td><td class="tee-time">€50</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- TEAMS & FORMATS -->
+  <section class="panel" id="teams">
+    <div class="section-head">
+      <h2>The Teams</h2>
       <p>Pair handicaps below are slope-adjusted per course — each player's Handicap Index is converted to a Course Handicap for that round (Index × Slope/113, adjusted for Course Rating vs Par), then the format percentage is applied on top: Chapman uses 60% of the lower Course Handicap + 40% of the higher; Fourball allows each player 85% of their own Course Handicap; the Scramble uses 35% of the lower + 15% of the higher. All rounded to the nearest whole stroke.</p>
     </div>
 
@@ -881,6 +916,104 @@
             <td class="tee-time">6</td>
             <td class="tee-time">8 / 5</td>
             <td class="tee-time">3</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section-head" style="margin-top:44px;">
+      <h2 style="font-size:clamp(1.5rem,4vw,2rem);">Tee Times</h2>
+      <p>Two pairs go off each tee time. Pairing handicaps are shown in brackets — Chapman on Friday, Fourball on Saturday.</p>
+    </div>
+
+    <div class="section-head" style="margin-top:0;">
+      <h3 style="font-size:clamp(1.3rem,4vw,1.6rem);text-transform:uppercase;font-family:'Big Shoulders Display',sans-serif;font-weight:800;">Friday · Laguna · Chapman</h3>
+    </div>
+    <div class="scorecard">
+      <table>
+        <thead>
+          <tr>
+            <th>Tee Time</th>
+            <th>Group 1</th>
+            <th>Group 2</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="tee-time">14:50</td>
+            <td class="course-name">Coady &amp; Browne (20)</td>
+            <td class="course-name">Charley &amp; Josh (14)</td>
+          </tr>
+          <tr>
+            <td class="tee-time">15:00</td>
+            <td class="course-name">Ross &amp; Fintan (21)</td>
+            <td class="course-name">Conall &amp; Ferg (7)</td>
+          </tr>
+          <tr>
+            <td class="tee-time">15:10</td>
+            <td class="course-name">Maurice &amp; Bobby (6)</td>
+            <td class="course-name">Bourkey &amp; Griffin (15)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section-head" style="margin-top:32px;">
+      <h3 style="font-size:clamp(1.3rem,4vw,1.6rem);text-transform:uppercase;font-family:'Big Shoulders Display',sans-serif;font-weight:800;">Saturday · Palmares · Fourball</h3>
+    </div>
+    <div class="scorecard">
+      <table>
+        <thead>
+          <tr>
+            <th>Tee Time</th>
+            <th>Group 1</th>
+            <th>Group 2</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="tee-time">13:40</td>
+            <td class="course-name">Ross &amp; Fintan (14 / 24)</td>
+            <td class="course-name">Bourkey &amp; Griffin (9 / 19)</td>
+          </tr>
+          <tr>
+            <td class="tee-time">13:50</td>
+            <td class="course-name">Charley &amp; Josh (15 / 10)</td>
+            <td class="course-name">Conall &amp; Ferg (15 / +1)</td>
+          </tr>
+          <tr>
+            <td class="tee-time">14:00</td>
+            <td class="course-name">Maurice &amp; Bobby (8 / 5)</td>
+            <td class="course-name">Coady &amp; Browne (17 / 17)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section-head" style="margin-top:32px;">
+      <h3 style="font-size:clamp(1.3rem,4vw,1.6rem);text-transform:uppercase;font-family:'Big Shoulders Display',sans-serif;font-weight:800;">Sunday · Faldo · Scramble</h3>
+    </div>
+    <div class="scorecard">
+      <table>
+        <thead>
+          <tr>
+            <th>Tee Time</th>
+            <th>Group 1</th>
+            <th>Group 2</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="tee-time">13:40</td>
+            <td class="course-name" colspan="2">Subject to Leaderboard</td>
+          </tr>
+          <tr>
+            <td class="tee-time">13:50</td>
+            <td class="course-name" colspan="2">Subject to Leaderboard</td>
+          </tr>
+          <tr>
+            <td class="tee-time">14:00</td>
+            <td class="course-name" colspan="2">Subject to Leaderboard</td>
           </tr>
         </tbody>
       </table>
@@ -1051,14 +1184,51 @@
   <section class="panel" id="info">
     <div class="section-head">
       <h2>Weather &amp; Useful Info</h2>
-      <p>Typical conditions for Alvor in early October — good golfing weather most days.</p>
+      <p>Forecast for the trip dates via Yr (Norwegian Meteorological Institute), updated 5 October — still worth a final check before you fly.</p>
     </div>
 
-    <div class="weather-grid">
-      <div class="wstat"><div class="num">22–23°</div><div class="lbl">Daytime High</div></div>
-      <div class="wstat"><div class="num">16–17°</div><div class="lbl">Overnight Low</div></div>
-      <div class="wstat"><div class="num">~20°</div><div class="lbl">Sea Temp</div></div>
-      <div class="wstat"><div class="num">~18%</div><div class="lbl">Chance Of Rain</div></div>
+    <div class="scorecard scroll-x">
+      <table>
+        <thead>
+          <tr>
+            <th>Day</th>
+            <th>Conditions</th>
+            <th>High / Low</th>
+            <th>Wind</th>
+            <th>Precipitation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="course-name">Thu 8 Oct</td>
+            <td>Fair</td>
+            <td class="tee-time">27° / 15°C</td>
+            <td>~14 km/h</td>
+            <td>0.1 mm</td>
+          </tr>
+          <tr>
+            <td class="course-name">Fri 9 Oct</td>
+            <td>Clear sky</td>
+            <td class="tee-time">27° / 18°C</td>
+            <td>~14 km/h</td>
+            <td>0 mm</td>
+          </tr>
+          <tr>
+            <td class="course-name">Sat 10 Oct</td>
+            <td>Clear sky</td>
+            <td class="tee-time">26° / 15°C</td>
+            <td>~14 km/h</td>
+            <td>0 mm</td>
+          </tr>
+          <tr>
+            <td class="course-name">Sun 11 Oct</td>
+            <td>Clear / fair</td>
+            <td class="tee-time">26° / 17°C</td>
+            <td>~14 km/h</td>
+            <td>0 mm</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
     <div class="info-grid">
